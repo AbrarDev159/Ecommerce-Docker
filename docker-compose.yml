@@ -1,0 +1,42 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    container_name: 'ecommerce-frontend'
+    ports:
+     - "5173:5173"
+    environment:
+      VITE_API_URL: "http://[ip address]:1337/api/"
+      VITE_API_IMAGE_URL: "http://[ip address]:1337"
+  backend:
+    build: ./backend
+    container_name: 'ecommerce-backend'
+    ports:
+      - "1337:1337"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_KEYS: l/ayy0O5eRCdaT6Px3mQpQ==,WmhiKxWHxFsIe2odjoarCg==,0bkY4dV7ZJIU3zzBYqpDDg==,w2ZsRm5IAbJaRWoRCRDhKw==
+      API_TOKEN_SALT: Dg0o9Ic//TuxAhyoDTCOgg==
+      ADMIN_JWT_SECRET: AAwyc1Q1Mg3xmNZKxyzhxQ==
+      JWT_SECRET: W7aWzWtbuFOxjjBkltk55Q==
+      DATABASE_HOST: [ip address]
+      DATABASE_PORT: 5432
+      DATABASE_NAME: postgres_db
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: root
+    volumes:
+      - uploads:/app/public/uploads
+  db:
+    image: postgres:alpine3.17
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres_db
+    ports:
+      - 5432:5432 
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  uploads:
+  db-data:
